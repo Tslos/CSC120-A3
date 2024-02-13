@@ -1,15 +1,18 @@
 import java.util.*;
-class Conversation {
 
-  public static void main(String[] arguments) {
-    // You will start the conversation here.
+class Conversation {
+/**
+   * Converses with a user, either returning a pronoun-swapped reflection 
+   * of the user's input or a random selection of canned responses. 
+   * @param args The command line arguments (ignored)
+   **/
+  public static void main() {
     // Create scanner
     Scanner sc = new Scanner(System.in);
-    
 
     // Initialize the random class
     Random rnd = new Random();
-    
+
     // Create list of pre-determined responses
     List<String> responses = new ArrayList<String>();
     responses.add("Interesting...");
@@ -21,122 +24,95 @@ class Conversation {
     responses.add("Really??");
     responses.add("Hrmmm...");
     responses.add("Coolio");
+    // Set default random response so it can be edited later
+    String rand_response = "";
 
-
+    // Initialize Transcript
+    List<String> transcript = new ArrayList<String>();
+    transcript.add("\n\nTRANSCRIPT: ");
     // Get the number of conversation rounds
     System.out.println("Please enter how many rounds of conversation you are up to today.");
     int rounds = sc.nextInt();
+    // clear scanner input so that there is no newline drama - removing this makes
+    // it zoom through the 2+ responses without waiting for input
+    sc.nextLine();
 
     // Print welcome statement
     System.out.println("Hi there!  What's on your mind?");
-    
 
-    //make general loop for conversation
-    for (int i = 0; i<rounds; i++){
-      //Get user statement
+    // make general loop for conversation
+    for (int i = 0; i < rounds; i++) {
+      // Get user statement
       String user_statement = sc.nextLine();
+      // Add input to transcript:
+      transcript.add("User: " + user_statement);
 
-                    // clear scanner input so that there is no newline drama - removing this makes it zoom through the 2+ responses without waiting for input
-                   //sc.nextLine();
+      // Start response construction
+      // Does user input contain a mirrorable word?
+      String response = user_statement;
+      if (user_statement.contains("I") |
+          user_statement.contains("I'm") |
+          user_statement.contains("Me") |
+          user_statement.contains("me") |
+          user_statement.contains("am") |
+          user_statement.contains("You") |
+          user_statement.contains("you") |
+          user_statement.contains("my") |
+          user_statement.contains("My") |
+          user_statement.contains("Your") |
+          user_statement.contains("your") |
+          user_statement.contains("you're") |
+          user_statement.contains("You're")) {
+        // Searches each word in statement, defining a word by splitting
+        // the string along every non-word character in regex terms
+        // Code inspo: https://stackoverflow.com/questions/15480811/for-loop-to-search-for-word-in-string
+        for (String word : user_statement.split("[^\\w]+")) {
+          System.out.println(word);
+          // Check word equality inspo: https://stackoverflow.com/questions/513832/how-do-i-compare-strings-in-java
+          if (word.equals("I")) {
+            response = response.replaceFirst(word,"You");
+          } else if (word.equals("Me")) {
+            response = response.replaceFirst(word, "You");
+          } else if (word.equals("me")) {
+            response = response.replaceFirst(word, "you");
+          } else if (word.equals("am")) {
+            response = response.replaceFirst(word, "are");
+          } else if (word.equals("You") | word.equals("you")) {
+            response = response.replaceFirst(word, "I");
+          } else if (word.equals("my")) {
+            response = response.replaceFirst(word, "your");
+          } else if (word.equals("My")) {
+            response = response.replaceFirst(word, "Your");
+          } else if (word.equals("your")) {
+            response = response.replaceFirst(word, "my");
+          } else if (word.equals("Your")) {
+            response = response.replaceFirst(word, "My");
+          } else if (word.equals("re")) {
+            response = response.replaceFirst(word, "m");
+          } else if (word.equals("m")) {
+            response = response.replaceFirst(word, "re");
+          } else if (word.equals("are")) {
+            response = response.replaceFirst(word, "am");
+          } else if (word.equals("Are")) {
+            response = response.replaceFirst(word, "Am");
+          }
+          
+        }
+        System.out.println(response + "?");
+        // Add the response to the transcipt
+        transcript.add("Bot: " + response + "?");
 
-
-                   // Replacement attempt 1: __________
-      // The I's
-      /* String resp = user_statement;
-      if (user_statement.matches(".*I.*")) {
-        resp = user_statement.replace("I", "You");
-        System.out.println(resp);
+      } else {
+        // Get random response if non-mirrorable response
+        rand_response = responses.get(rnd.nextInt(9));
+        // Add the response to the transcipt
+        transcript.add("Bot: " + rand_response);
+        System.out.println(rand_response);
       }
-
-      // The Me's
-      if (user_statement.matches(".*me.*")) {
-        resp = resp.replace("me", "you");
-        System.out.println(resp);
-      }
-      if (user_statement.matches(".*Me.*")) {
-         resp = resp.replace("Me", "You");
-        System.out.println(resp);
-      }
-      // The You's
-      if (user_statement.matches(".*you.*")) {
-         resp = resp.replace("you", "I");
- System.out.println(resp);
-      }
-      if (user_statement.matches(".*You.*")) {
-         resp = resp.replace("You", "I");
-        System.out.println(resp);
-      }
-      // The My's
-      if (user_statement.matches(".*my.*")) {
-         resp = resp.replace("my", "your");
-        System.out.println(resp);
-      }
-      if (user_statement.matches(".*My.*")) {
-         resp = resp.replace("My", "Your");
-        System.out.println(resp);
-      }
-       // The Your's
-       if (user_statement.matches(".*your.*")) {
-         resp = resp.replace("your", "my");
-System.out.println(resp);
-      }
-      if (user_statement.matches(".*Your.*")) {
-         resp = resp.replace("Your", "My");
-        System.out.println(resp);
-      }
-      // The am's
-      if (user_statement.matches(".*am.*")) {
-         resp = resp.replace("am", "are");
-        System.out.println(resp);
-      }
-      if (user_statement.matches(".*'m.*")) {
-         resp = resp.replace("'m", "'re'");
-        System.out.println(resp);
-      }
-      // The are's
-      if (user_statement.matches(".*'re.*")) {
-         resp = resp.replace("'re'", "'m'");
-        System.out.println(resp);
-      }
-
-      System.out.println(resp);
-       */
-      
-      
-
-
-
-      // LIST APPROACH ________________________________
-// Split along spaces so that there is a list with each word in the user input. 
-// This does not take care of punctuation! I could do that by 
-// swapping "\\s+" for  (\\s|[^\\w\\s])+, but I don't want to lose mid-sentence , or '
-//String[] user_array = user_statement.split("\\s+");      
-
-// print out the listified input
-      //System.out.println(Arrays.toString(user_array));
-
-      //List parts = Arrays.asList(user_array);
-
-      //if (parts.contains("I")){
-        //int pronoun_index = parts.indexOf("I");
-       // parts.set(pronoun_index, "You");
-       // System.out.println(parts);
-       // System.out.println(Arrays.toString(parts.toArray()));
-     // }
-//Combine the list again
-      //String response = Arrays.toString(parts);
-
-      // END LIST APPROACH ________________________________
-
-
-
-
-      //} else {
-      // Get random response
-      //System.out.println(responses.get(rnd.nextInt(9)));
-      //}
     }
-
+    for (int line = 0; line < transcript.size(); line++) {
+      System.out.println(transcript.get(line));
+    }
     sc.close();
   }
 }
