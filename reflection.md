@@ -1,7 +1,7 @@
 Use this file to record your reflection on this assignment.
 
 - Which classmates did you consult with while working on this assignment?
-    Uma, Olohi
+    Uma, Olohi, Yuyao Zhu 
 
 - Which session(s) of TA / office hours did you attend?
     Office hours with Jordan Friday morning 2/9
