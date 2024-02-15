@@ -1,5 +1,4 @@
 Use this file to record your reflection on this assignment.
-
 - Which classmates did you consult with while working on this assignment?
     Uma, Olohi, Yuyao Zhu 
 
@@ -13,6 +12,6 @@ Use this file to record your reflection on this assignment.
     I'm started visualizing the structures of Java vs. Python a bit like root systems. Python has a fiberous, monocot like system where everything is interconnected, and it's slightly easier to trace across a method to an object. Java has a tuberous system. Technically you can probably get from point A to point B all the same, but first you need to get to a new tuber (Class) before you can reach out into its associated methods. 
 
 - What worked, what didn't, what advice would you give someone taking this course in the future?
-    I tried a lot of different methods for replacing and searching over the user input, including: breaking into an array, breaking into a list, keeping it as a sring and evaluating the whole thing at once. None of those worked super well -- breaking it into an array got me the furthest, but I had a lot of difficulty putting it back into a string. Eventually I managed to googl ethe correct terms and find the stackoverflow question that showed me I could break the string into a list within the for loop and not save it, which was really helpful. I would reccommend that people approach this by thinking of the path of fewest steps, because each conversion of the input is an opportunity for the data type to get fussy. After coming up with the path of fewest steps, do a lot of googling to figure out the way to approach that in Java syntax. 
+    I tried a lot of different methods for replacing and searching over the user input, including: breaking into an array, breaking into a list, keeping it as a string and evaluating the whole thing at once. For a while (up until 9 pm Tuesday night lol) I was satisfied with the "keep as string" approach, but it didn't work super well when some pronouns showed up in the same sentence in a certain order (aka when "you" appeared before "I"). I eventually asked ChatGPT to figure out a way to turn a list of words into a string separated by spaces (the part about splitting into an array that was tripping me up before), and it ended up working!! I am usually stubborn about using chatGPT because I don't like that it takes the agency of learning away from me, but I was so lost on different Java string classes that this time it was actually really helpful. For future students, I would reccommend not shying away from AI necessarily, but to ask it the most specific problem possible, so that it is really provide syntax guidance as opposed to strategizing. 
 
     

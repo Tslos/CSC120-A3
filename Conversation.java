@@ -1,12 +1,14 @@
 import java.util.*;
+import java.lang.StringBuilder;
 
 class Conversation {
-/**
-   * Converses with a user, either returning a pronoun-swapped reflection 
-   * of the user's input or a random selection of canned responses. 
+  /**
+   * Converses with a user, either returning a pronoun-swapped reflection
+   * of the user's input or a random selection of canned responses.
+   * 
    * @param args The command line arguments (ignored)
    **/
-  public static void main() {
+  public static void main(String[] args) {
     // Create scanner
     Scanner sc = new Scanner(System.in);
 
@@ -42,68 +44,78 @@ class Conversation {
 
     // make general loop for conversation
     for (int i = 0; i < rounds; i++) {
+      // Reset mirror_on variable:
+      Boolean mirror_on = false;
+      // Initialize new String Builder to receive response
+      StringBuilder mirror_response = new StringBuilder();
+
       // Get user statement
       String user_statement = sc.nextLine();
+
       // Add input to transcript:
       transcript.add("User: " + user_statement);
 
+      String[] user_list = user_statement.split(" ");
+
       // Start response construction
       // Does user input contain a mirrorable word?
-      String response = user_statement;
-      if (user_statement.contains("I") |
-          user_statement.contains("I'm") |
-          user_statement.contains("Me") |
-          user_statement.contains("me") |
-          user_statement.contains("am") |
-          user_statement.contains("You") |
-          user_statement.contains("you") |
-          user_statement.contains("my") |
-          user_statement.contains("My") |
-          user_statement.contains("Your") |
-          user_statement.contains("your") |
-          user_statement.contains("you're") |
-          user_statement.contains("You're")) {
-        // Searches each word in statement, defining a word by splitting
-        // the string along every non-word character in regex terms
-        // Code inspo: https://stackoverflow.com/questions/15480811/for-loop-to-search-for-word-in-string
-        for (String word : user_statement.split("[^\\w]+")) {
-          System.out.println(word);
-          // Check word equality inspo: https://stackoverflow.com/questions/513832/how-do-i-compare-strings-in-java
-          if (word.equals("I")) {
-            response = response.replaceFirst(word,"You");
-          } else if (word.equals("Me")) {
-            response = response.replaceFirst(word, "You");
-          } else if (word.equals("me")) {
-            response = response.replaceFirst(word, "you");
-          } else if (word.equals("am")) {
-            response = response.replaceFirst(word, "are");
-          } else if (word.equals("You") | word.equals("you")) {
-            response = response.replaceFirst(word, "I");
-          } else if (word.equals("my")) {
-            response = response.replaceFirst(word, "your");
-          } else if (word.equals("My")) {
-            response = response.replaceFirst(word, "Your");
-          } else if (word.equals("your")) {
-            response = response.replaceFirst(word, "my");
-          } else if (word.equals("Your")) {
-            response = response.replaceFirst(word, "My");
-          } else if (word.equals("re")) {
-            response = response.replaceFirst(word, "m");
-          } else if (word.equals("m")) {
-            response = response.replaceFirst(word, "re");
-          } else if (word.equals("are")) {
-            response = response.replaceFirst(word, "am");
-          } else if (word.equals("Are")) {
-            response = response.replaceFirst(word, "Am");
+      for (String word : user_list) {
+        if (word.contains("I") |
+            word.contains("I'm") |
+            word.contains("Me") |
+            word.contains("me") |
+            word.contains("am") |
+            word.contains("You") |
+            word.contains("you") |
+            word.contains("my") |
+            word.contains("My") |
+            word.contains("Your") |
+            word.contains("your") |
+            word.contains("you're") |
+            word.contains("You're")) {
+          // Code inspo for checking string equality:
+          // https://stackoverflow.com/questions/43760107/how-to-partial-match-with-a-string
+          if (word.contains("I")) {
+            // Switch the mirror_on variable to be true for response return later
+            mirror_on = true;
+            word = word.replace(word, "You");
+          } else if (word.contains("Me")) {
+            word = word.replace(word, "You");
+          } else if (word.contains("me")) {
+            word = word.replace(word, "you");
+          } else if (word.contains("am")) {
+            word = word.replace(word, "are");
+          } else if (word.contains("You") | word.contains("you")) {
+            word = word.replace(word, "I");
+          } else if (word.contains("my")) {
+            word = word.replace(word, "your");
+          } else if (word.contains("My")) {
+            word = word.replace(word, "Your");
+          } else if (word.contains("your")) {
+            word = word.replace(word, "my");
+          } else if (word.contains("Your")) {
+            word = word.replace(word, "My");
+          } else if (word.contains("re")) {
+            word = word.replace(word, "m");
+          } else if (word.contains("m")) {
+            word = word.replace(word, "re");
+          } else if (word.contains("are")) {
+            word = word.replace(word, "am");
+          } else if (word.contains("Are")) {
+            word = word.replace(word, "Am");
           }
-          
         }
-        System.out.println(response + "?");
-        // Add the response to the transcipt
-        transcript.add("Bot: " + response + "?");
+        // Code from a chatGPT question https://chat.openai.com/share/94798286-c33f-4725-885e-23be5dc7675f
+        mirror_response.append(word).append(" ");
+      }
+      mirror_response.deleteCharAt(mirror_response.length() - 1).append("?");
 
+      // If the input contained mirrorable words, return the mirrored statement
+      if (mirror_on) {
+        System.out.println(mirror_response);
+        transcript.add("User: " + mirror_response);
+      // Get random response if non-mirrorable response
       } else {
-        // Get random response if non-mirrorable response
         rand_response = responses.get(rnd.nextInt(9));
         // Add the response to the transcipt
         transcript.add("Bot: " + rand_response);
