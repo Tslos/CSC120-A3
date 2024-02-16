@@ -60,52 +60,70 @@ class Conversation {
       // Start response construction
       // Does user input contain a mirrorable word?
       for (String word : user_list) {
-        if (word.contains("I") |
-            word.contains("I'm") |
-            word.contains("Me") |
-            word.contains("me") |
-            word.contains("am") |
-            word.contains("You") |
-            word.contains("you") |
-            word.contains("my") |
-            word.contains("My") |
-            word.contains("Your") |
-            word.contains("your") |
-            word.contains("you're") |
-            word.contains("You're")) {
+        if (word.matches("\\bI[^A-Z,a-z]*") |
+            word.matches("\\bI'm[^A-Z,a-z]*") |
+            word.matches("\\bMe[^A-Z,a-z]*") |
+            word.matches("\\bme[^A-Z,a-z]*") |
+            word.matches("\\bam[^A-Z,a-z]*") |
+            word.matches("\\bYou[^A-Z,a-z]*") |
+            word.matches("\\byou[^A-Z,a-z]*") |
+            word.matches("\\bare[^A-Z,a-z]*") |
+            word.matches("\\bAre[^A-Z,a-z]*") |
+            word.matches("\\bmy[^A-Z,a-z]*") |
+            word.matches("\\bMy[^A-Z,a-z]*") |
+            word.matches("\\bYour[^A-Z,a-z]*") |
+            word.matches("\\byour[^A-Z,a-z]*") |
+            word.matches("\\byou're[^A-Z,a-z]*") |
+            word.matches("\\bYou're[^A-Z,a-z]*")) {
+          // Switch the mirror_on variable to be true for response return later
+          mirror_on = true;
           // Code inspo for checking string equality:
           // https://stackoverflow.com/questions/43760107/how-to-partial-match-with-a-string
-          if (word.contains("I")) {
-            // Switch the mirror_on variable to be true for response return later
-            mirror_on = true;
-            word = word.replace(word, "You");
-          } else if (word.contains("Me")) {
-            word = word.replace(word, "You");
-          } else if (word.contains("me")) {
-            word = word.replace(word, "you");
-          } else if (word.contains("am")) {
-            word = word.replace(word, "are");
-          } else if (word.contains("You") | word.contains("you")) {
-            word = word.replace(word, "I");
-          } else if (word.contains("my")) {
-            word = word.replace(word, "your");
-          } else if (word.contains("My")) {
-            word = word.replace(word, "Your");
-          } else if (word.contains("your")) {
-            word = word.replace(word, "my");
-          } else if (word.contains("Your")) {
-            word = word.replace(word, "My");
-          } else if (word.contains("re")) {
-            word = word.replace(word, "m");
-          } else if (word.contains("m")) {
-            word = word.replace(word, "re");
-          } else if (word.contains("are")) {
-            word = word.replace(word, "am");
-          } else if (word.contains("Are")) {
-            word = word.replace(word, "Am");
+          if (word.matches("\\bI[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bI[^A-Z,a-z]*", "You");
+
+          } else if (word.matches("\\bMe[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bMe", "You");
+
+          } else if (word.matches("\\bme[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bme", "you");
+
+          } else if (word.matches("\\bam[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bam", "are");
+
+          } else if (word.matches("\\bAm[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bAm", "Are");
+
+          } else if (word.matches("(?i)\\bYou[^A-Z,a-z]*")) {
+            word = word.replaceAll("(?i)\\bYou", "I");
+
+          } else if (word.matches("\\bmy[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bmy\\b", "your");
+
+          } else if (word.matches("\\bMy[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bMy", "Your");
+
+          } else if (word.matches("\\byour[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\byour", "my");
+
+          } else if (word.matches("\\bYour[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bYour", "My");
+
+          } else if (word.matches("(?i)\\byou're[^A-Z,a-z]*")) {
+            word = word.replaceAll("(?i)\\byou're", "I'm");
+
+          } else if (word.matches("\\bI'm[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bI'm", "You're");
+
+          } else if (word.matches("\\bare[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bare", "am");
+
+          } else if (word.matches("\\bAre[^A-Z,a-z]*")) {
+            word = word.replaceAll("\\bAre", "Am");
           }
         }
-        // Code from a chatGPT question https://chat.openai.com/share/94798286-c33f-4725-885e-23be5dc7675f
+        // Code from a chatGPT question
+        // https://chat.openai.com/share/94798286-c33f-4725-885e-23be5dc7675f
         mirror_response.append(word).append(" ");
       }
       mirror_response.deleteCharAt(mirror_response.length() - 1).append("?");
@@ -113,8 +131,8 @@ class Conversation {
       // If the input contained mirrorable words, return the mirrored statement
       if (mirror_on) {
         System.out.println(mirror_response);
-        transcript.add("User: " + mirror_response);
-      // Get random response if non-mirrorable response
+        transcript.add("Bot: " + mirror_response);
+        // Get random response if non-mirrorable response
       } else {
         rand_response = responses.get(rnd.nextInt(9));
         // Add the response to the transcipt
