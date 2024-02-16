@@ -1,4 +1,7 @@
 Use this file to record your reflection on this assignment.
+
+**Note:** I resubmitted after having a prophetic dream in which I discovered a bug in my code due to regex. Other than that (and one typo where the mirror_on statement was a line later than it was supposed to be), code is unchanged from the last (on time) submission. 
+
 - Which classmates did you consult with while working on this assignment?
     Uma, Olohi, Yuyao Zhu 
 
